@@ -133,6 +133,18 @@ template "#{node['aet']['karaf']['root_dir']}/current/etc/users.properties" do
   mode '0644'
 end
 
+# Configure Karaf repositories
+template "#{node['aet']['karaf']['root_dir']}/current/etc/"\
+  'org.ops4j.pax.url.mvn.cfg' do
+  source 'content/karaf/current/etc/org.ops4j.pax.url.mvn.cfg.erb'
+  owner node['aet']['karaf']['user']
+  group node['aet']['karaf']['group']
+  cookbook node['aet']['karaf']['src_cookbook']['ops4j_cfg']
+  mode '0644'
+
+  notifies :restart, 'service[karaf]', :delayed
+end
+
 # Configure Web console port
 template "#{node['aet']['karaf']['root_dir']}/current/etc/"\
   'org.ops4j.pax.web.cfg' do

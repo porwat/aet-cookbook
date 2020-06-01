@@ -56,7 +56,6 @@ end
   proxy_http
   headers
   filter
-  rewrite
 ).each do |it|
   apache_module it do
     enable true

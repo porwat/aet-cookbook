@@ -65,7 +65,7 @@ filename = get_filename(node['aet']['activemq']['source'])
 remote_file "#{node['aet']['activemq']['root_dir']}/#{filename}" do
   owner node['aet']['activemq']['user']
   group node['aet']['activemq']['group']
-  mode '0644'
+  mode '0644' 
   source node['aet']['activemq']['source']
 end
 

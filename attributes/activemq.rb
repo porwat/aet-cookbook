@@ -23,8 +23,8 @@
 default['aet']['activemq']['version'] = '5.15.2'
 default['aet']['activemq']['root_dir'] = '/opt/aet/activemq'
 default['aet']['activemq']['log_dir'] = '/var/log/activemq'
-default['aet']['activemq']['source']  = 'https://archive.apache.org/dist/'\
-  'activemq/5.15.2/apache-activemq-5.15.2-bin.tar.gz'
+default['aet']['activemq']['source']  = 'https://repo1.maven.org/'\
+'maven2/org/apache/activemq/apache-activemq/5.15.2/apache-activemq-5.15.2-bin.tar.gz'
 
 default['aet']['activemq']['user'] = 'activemq'
 default['aet']['activemq']['group'] = 'activemq'

@@ -22,7 +22,7 @@
 # KARAF
 
 default['aet']['karaf']['source'] =
-  'https://archive.apache.org/dist/karaf/4.2.0/apache-karaf-4.2.0.tar.gz'
+  'https://repo1.maven.org/maven2/org/apache/karaf/apache-karaf/4.2.0/apache-karaf-4.2.0.tar.gz'
 
 default['aet']['karaf']['user'] = 'karaf'
 default['aet']['karaf']['group'] = 'karaf'
