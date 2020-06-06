@@ -31,9 +31,9 @@ def check_if_new(artifact_type, deploy_dir, version_dir, task_to_run)
 
     not_if { same_version?(deploy_dir, version_dir) }
 
-    notifies :stop, 'service[karaf-deploy-stop]', :immediately
+    #notifies :stop, 'service[karaf-deploy-stop]', :immediately
     notifies :run, task_to_run, :immediately
-    notifies :run, 'execute[schedule-karaf-restart]', :immediately
+    #notifies :run, 'execute[schedule-karaf-restart]', :immediately
   end
 
   create_link(deploy_dir, version_dir)

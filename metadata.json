@@ -6,12 +6,13 @@
   "maintainer_email": "karol.drazek@cognifide.com",
   "license": "Apache 2.0",
   "platforms": {
-    "centos-6.8": ">= 0.0.0"
+    "centos-7": ">= 0.0.0"
   },
   "dependencies": {
     "apache2": "~> 3.3.1",
     "java": "~> 2.2.0",
-    "sc-mongodb": "~> 1.2.0"
+    "sc-mongodb": "~> 1.2.0",
+    "karaf": "~> 3.1.0"
   },
   "providing": {
 

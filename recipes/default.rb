@@ -19,9 +19,6 @@
 # limitations under the License.
 #
 
-# Base packages and X Windows System
-include_recipe 'aet::display'
-
 # Apache to handle reports
 include_recipe 'aet::apache'
 
@@ -34,10 +31,7 @@ include_recipe 'aet::activemq'
 # Browsermob proxy to catch pages that are displayed during AET run
 include_recipe 'aet::browsermob'
 
-# Firefox to handle displaying the page during AET run
-include_recipe 'aet::firefox'
-
-# Xvfb to handlin virtual displays for Firefox
+# Xvfb to handlin virtual displays for Chrome
 include_recipe 'aet::xvfb'
 
 # Tomcat to host sample sites
@@ -47,7 +41,7 @@ include_recipe 'aet::tomcat'
 include_recipe 'aet::seleniumgrid_hub'
 
 # Selenium Grid node to handle tests on Firefox browser
-include_recipe 'aet::seleniumgrid_node_ff'
+include_recipe 'aet::seleniumgrid_node_chrome'
 
 # Karaf to host AET bundles and be the core of the system
 include_recipe 'aet::karaf'

@@ -65,22 +65,20 @@ remote_file "#{node['aet']['seleniumgrid']['hub']['root_dir']}/#{filename}" do
   source "file:///tmp/#{filename}"
   owner node['aet']['seleniumgrid']['user']
   group node['aet']['seleniumgrid']['group']
-  mode 0755
+  mode '0755'
 end
 
-# Create Selenium Grid hub init file
-template '/etc/init.d/hub' do
-  source 'etc/init.d/hub.erb'
+template '/etc/systemd/system/seleniumgrid-hub.service' do
+  source 'etc/systemd/system/seleniumgrid-hub.service.erb'
   owner 'root'
   group 'root'
   cookbook node['aet']['seleniumgrid']['hub']['src_cookbook']['init_script']
   mode '0755'
 
-  notifies :restart, 'service[hub]', :delayed
+  notifies :restart, 'service[seleniumgrid-hub]', :delayed
 end
 
-# Enable and start Selenium Grid hub
-service 'hub' do
+service 'seleniumgrid-hub' do
   supports status: true, restart: true
   action [:start, :enable]
 end

@@ -1,0 +1,13 @@
+[Unit]
+Description=karaf
+
+[Service]
+Type=forking
+ExecStart=<%= node['aet']['karaf']['root_dir'] %>/current/bin/karaf-service start
+ExecReload=<%= node['aet']['karaf']['root_dir'] %>/current/bin/karaf-service restart
+ExecStop=<%= node['aet']['karaf']['root_dir'] %>/current/bin/karaf-service stop
+PIDFile=/run/karaf.wrapper.pid
+
+[Install]
+Alias=karaf
+WantedBy=default.target

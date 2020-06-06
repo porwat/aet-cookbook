@@ -113,17 +113,6 @@ template "#{node['aet']['karaf']['root_dir']}/current/bin/setenv" do
   notifies :restart, 'service[karaf]', :delayed
 end
 
-# Create Karaf init file
-template '/etc/init.d/karaf' do
-  source 'etc/init.d/karaf.erb'
-  owner 'root'
-  group 'root'
-  cookbook node['aet']['karaf']['src_cookbook']['init_script']
-  mode '0755'
-
-  notifies :restart, 'service[karaf]', :delayed
-end
-
 # Configure user credentials
 template "#{node['aet']['karaf']['root_dir']}/current/etc/users.properties" do
   source 'content/karaf/current/etc/users.properties.erb'
@@ -192,7 +181,78 @@ link "#{node['aet']['karaf']['root_dir']}/current/data/log" do
   to node['aet']['karaf']['log_dir']
 end
 
-# Enable and start Karaf
+# # Enable and start Karaf
+
+
+directory "#{node['aet']['karaf']['root_dir']}/current/lib/wrapper" do
+  owner node['aet']['karaf']['user']
+  group node['aet']['karaf']['group']
+  mode '0755'
+  action :create
+  recursive true
+end
+cookbook_file "#{node['aet']['karaf']['root_dir']}/current/bin/karaf-wrapper" do
+  source 'karaf/bin/karaf-wrapper'
+  owner node['aet']['karaf']['user']
+  group node['aet']['karaf']['group']
+  mode '0755'
+  action :create
+end
+
+cookbook_file "#{node['aet']['karaf']['root_dir']}/current/lib/wrapper/karaf-wrapper-main.jar" do
+  source 'karaf/lib/wrapper/karaf-wrapper-main.jar'
+  owner node['aet']['karaf']['user']
+  group node['aet']['karaf']['group']
+  mode '0755'
+  action :create
+end
+
+cookbook_file "#{node['aet']['karaf']['root_dir']}/current/lib/wrapper/karaf-wrapper.jar" do
+  source 'karaf/lib/wrapper/karaf-wrapper.jar'
+  owner node['aet']['karaf']['user']
+  group node['aet']['karaf']['group']
+  mode '0755'
+  action :create
+end
+
+cookbook_file "#{node['aet']['karaf']['root_dir']}/current/lib/wrapper/libwrapper.so" do
+  source 'karaf/lib/wrapper/libwrapper.so'
+  owner node['aet']['karaf']['user']
+  group node['aet']['karaf']['group']
+  mode '0755'
+  action :create
+end
+
+template "#{node['aet']['karaf']['root_dir']}/current/bin/karaf-service" do
+  source 'content/karaf/current/bin/karaf-service.erb'
+  owner node['aet']['karaf']['user']
+  group node['aet']['karaf']['group']
+  cookbook node['aet']['karaf']['src_cookbook']['init_script']
+  mode '0755'
+
+  notifies :restart, 'service[karaf]', :delayed
+end
+
+template "#{node['aet']['karaf']['root_dir']}/current/etc/karaf-wrapper.conf" do
+  source 'content/karaf/current/etc/karaf-wrapper.conf.erb'
+  owner node['aet']['karaf']['user']
+  group node['aet']['karaf']['group']
+  cookbook node['aet']['karaf']['src_cookbook']['init_script']
+  mode '0755'
+
+  notifies :restart, 'service[karaf]', :delayed
+end
+
+template '/etc/systemd/system/karaf.service' do
+  source 'etc/systemd/system/karaf.service.erb'
+  owner 'root'
+  group 'root'
+  cookbook node['aet']['karaf']['src_cookbook']['init_script']
+  mode '0755'
+
+  notifies :restart, 'service[karaf]', :delayed
+end
+
 service 'karaf' do
   supports status: true, restart: true
   action [:start, :enable]

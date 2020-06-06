@@ -90,16 +90,6 @@ bash "Unpack #{src_filename} to #{node['aet']['tomcat']['base_dir']}" do
   not_if { ::Dir.exist?("#{node['aet']['tomcat']['base_dir']}/bin") }
 end
 
-# Init script handling
-template '/etc/init.d/tomcat' do
-  cookbook node['aet']['tomcat']['src_cookbook']['init_script']
-  source 'etc/init.d/tomcat.erb'
-  owner 'root'
-  group 'root'
-  mode '0755'
-  notifies :restart, 'service[tomcat]', :delayed
-end
-
 # Removing old logs directory
 directory "#{node['aet']['tomcat']['base_dir']}/logs" do
   recursive true
@@ -148,14 +138,18 @@ template "#{node['aet']['tomcat']['base_dir']}/conf/tomcat-users.xml" do
   notifies :restart, 'service[tomcat]', :delayed
 end
 
-#### STARTUP ####
+# #### STARTUP ####
 
-service 'tomcat (enable)' do
-  service_name 'tomcat'
-  action :enable
+template '/etc/systemd/system/tomcat.service' do
+  source 'etc/systemd/system/tomcat.service.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+
+  notifies :restart, 'service[tomcat]', :delayed
 end
 
 service 'tomcat' do
   supports status: true, restart: true
-  action :start
+  action [:start, :enable]
 end

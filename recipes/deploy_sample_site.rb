@@ -67,7 +67,7 @@ log 'sample-site-version-changed' do
 
   notifies :run, 'execute[extract-sample-site]', :immediately
   notifies :create, "link[#{sample_site_deploy_dir}]", :immediately
-  notifies :restart, 'service[tomcat]', :delayed
+#  notifies :restart, 'service[tomcat]', :delayed
 end
 
 # Extract sample site zip (skipped by default, run only when notified)
@@ -89,5 +89,5 @@ end
 # Link sample site to tomcat
 link "#{base_dir}/webapps/sample-site.war" do
   to "#{sample_site_deploy_dir}/sample-site.war"
-  notifies :restart, 'service[tomcat]', :delayed
+  #notifies :restart, 'service[tomcat]', :delayed
 end

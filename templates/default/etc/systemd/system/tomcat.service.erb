@@ -1,0 +1,22 @@
+[Unit]
+Description=Apache Tomcat Web Application Container
+After=syslog.target network.target
+
+[Service]
+Type=forking
+
+Environment=JAVA_HOME=/usr/lib/jvm/jre
+Environment=CATALINA_PID=/run/tomcat.pid
+Environment=CATALINA_HOME=<%= node['aet']['tomcat']['base_dir'] %>
+Environment=CATALINE_BASE=<%= node['aet']['tomcat']['base_dir'] %>
+Environment='CATALINE_OPTS=-Xms<%= node['aet']['tomcat']['min_heap'] %>M -Xmx<%= node['aet']['tomcat']['max_heap'] %>M -server -XX:+UseParallelGC'
+Environment='JAVA_OPTS=-Djava.awt.haedless=true -Djava.security.egd=file:/dev/./urandom'
+
+ExecStart=<%= node['aet']['tomcat']['base_dir'] %>/bin/startup.sh
+ExecStop=/bin/kill -15 $MAINPID
+
+User=<%= node['aet']['tomcat']['user'] %>
+Group=<%= node['aet']['tomcat']['group'] %>
+
+[Install]
+WantedBy=multi-user.target

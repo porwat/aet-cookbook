@@ -1,0 +1,12 @@
+[Unit]
+Description=Browsermob
+After=network.target
+
+[Service]
+ExecStart=/bin/bash -c '<%= node['aet']['browsermob']['root_dir'] %>/current/bin/browsermob-proxy \
+                        -port <%= node['aet']['browsermob']['port'] %> -proxyPortRange <%= node['aet']['browsermob']['proxy_port_range'] %> >> <%= node['aet']['browsermob']['log_dir'] %>/browsermob.log 2>&1'
+Type=simple
+PIDFile=/run/browsermob.pid
+
+[Install]
+WantedBy=multi-user.target

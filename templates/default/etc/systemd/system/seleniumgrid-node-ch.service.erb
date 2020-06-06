@@ -1,0 +1,12 @@
+[Unit]
+Description=Selenium Chrome Node
+After=network.target
+
+[Service]
+ExecStart=<%= node['aet']['seleniumgrid']['node_ch']['root_dir'] %>/start-selenium-node.sh
+ExecStop=/bin/kill -15 $MAINPID
+Type=simple
+PIDFile=/run/selenium.node.ch.pid
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,15 @@
+[Unit]
+Description=SeleniumgridHub
+After=network.target
+
+[Service]
+ExecStart=/bin/bash -c 'nohup java -Dselenium.LOGGER.level=INFO \
+                       -jar <%= node['aet']['seleniumgrid']['hub']['root_dir'] %>/selenium-server-standalone-3.14.0.jar \
+                       -role hub \
+                       >> <%= node['aet']['seleniumgrid']['hub']['log_dir'] %>/hub.log 2>&1'
+ExecStop=/bin/kill -15 $MAINPID
+Type=simple
+PIDFile=/run/seleniumhub.pid
+
+[Install]
+WantedBy=multi-user.target

@@ -98,9 +98,8 @@ link "#{node['aet']['browsermob']['root_dir']}/current" do
   notifies :restart, 'service[browsermob]', :delayed
 end
 
-# Create init script for browsermob
-template '/etc/init.d/browsermob' do
-  source 'etc/init.d/browsermob.erb'
+template '/etc/systemd/system/browsermob.service' do
+  source 'etc/systemd/system/browsermob.service.erb'
   owner 'root'
   group 'root'
   cookbook node['aet']['browsermob']['src_cookbook']['init_script']
@@ -109,7 +108,6 @@ template '/etc/init.d/browsermob' do
   notifies :restart, 'service[browsermob]', :delayed
 end
 
-# Enable and start browsermob service
 service 'browsermob' do
   action [:start, :enable]
 end

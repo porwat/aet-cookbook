@@ -1,17 +1,30 @@
 <VirtualHost *:80>
-    DocumentRoot "<%= node['aet']['apache']['report_base_dir'] %>/aet_reports/current"
-    ServerName aet
+  DocumentRoot "<%= node['aet']['apache']['report_base_dir'] %>/aet_reports/current"
+  ServerName aet
 
-    ErrorLog "<%= node['aet']['apache']['log_dir'] %>/aet-error.log"
-    CustomLog "<%= node['aet']['apache']['log_dir'] %>/aet-access.log" common
+  ErrorLog "<%= node['aet']['apache']['log_dir'] %>/aet-error.log"
+  CustomLog "<%= node['aet']['apache']['log_dir'] %>/aet-access.log" common
 
-    AddOutputFilterByType DEFLATE text/html text/plain text/xml
-    AddOutputFilterByType DEFLATE text/css
-    AddOutputFilterByType DEFLATE text/javascript
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml
+  AddOutputFilterByType DEFLATE text/css
+  AddOutputFilterByType DEFLATE text/javascript
 
-    <LocationMatch "^/((api|configs|suite|system|xunit|lock).*)">
-      Header set Access-Control-Allow-Origin "*"
-      ProxyPassMatch http://<%= node['aet']['apache']['karaf_ip'] %>:<%= node['aet']['karaf']['web_port'] %>/$1
-    </LocationMatch>
+  <Location "/api">
+    Header set Access-Control-Allow-Origin "*"
+    ProxyPass http://<%= node['aet']['apache']['karaf_ip'] %>:<%= node['aet']['karaf']['web_port'] %>/api
+  </Location>
 
+  <Location "/suite">
+    ProxyPass http://<%= node['aet']['apache']['karaf_ip'] %>:<%= node['aet']['karaf']['web_port'] %>/suite
+  </Location>
+
+  <Location "/xunit">
+    ProxyPass http://<%= node['aet']['apache']['karaf_ip'] %>:<%= node['aet']['karaf']['web_port'] %>/xunit
+  </Location>
+
+  <Directory /opt/aet/apache/aet_reports/current>
+        Options Indexes FollowSymLinks
+        AllowOverride None
+        Require all granted
+  </Directory>
 </VirtualHost>

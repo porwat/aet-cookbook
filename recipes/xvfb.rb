@@ -33,45 +33,4 @@
   package p do
     action :install
   end
-end
-
-# Create dedicated group
-group node['aet']['xvfb']['group'] do
-  action :create
-end
-
-# Create dedicated user
-user node['aet']['xvfb']['user'] do
-  group node['aet']['xvfb']['group']
-  manage_home true
-  home "/var/lib/#{node['aet']['xvfb']['user']}"
-  system true
-  shell '/bin/bash'
-  action :create
-end
-
-# Create dedicate log directory
-directory node['aet']['xvfb']['log_dir'] do
-  owner node['aet']['xvfb']['user']
-  group node['aet']['xvfb']['group']
-  mode '0755'
-  action :create
-  recursive true
-end
-
-# Create init script for Xvfb
-template '/etc/init.d/xvfb' do
-  source 'etc/init.d/xvfb.erb'
-  owner 'root'
-  group 'root'
-  cookbook node['aet']['xvfb']['src_cookbook']['init_script']
-  mode '0755'
-
-  notifies :restart, 'service[xvfb]', :immediately
-end
-
-# Start and enable Xvfb service
-service 'xvfb' do
-  supports status: true, restart: true
-  action [:start, :enable]
-end
+end 
